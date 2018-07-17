@@ -21,6 +21,8 @@ from users import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
     # url(r"^users/",include("users.urls")),
-    url(r"^news/(?P<category>\d+)/(?P<page>\d+)$",users.views.news)
+    url(r"^",include("users.urls"))
+
 ]

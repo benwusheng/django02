@@ -9,3 +9,11 @@ def index(request):
 
 def news(request,category,page):
     return HttpResponse("显示新闻:%s %s"%(category,page))
+
+def news2(request):
+    categorg=request.GET.get("category")
+    page_no=request.GET.get("page_no")
+
+    text="news2:%s %s"%(categorg,page_no)
+
+    return HttpResponse(text)
