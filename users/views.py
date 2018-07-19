@@ -7,9 +7,15 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.utils.deprecation import MiddlewareMixin
+from django.views import View
+
+from users.decorators import check_ip
 
 
 def index(request):
+    print("------index-------")
     # return HttpResponse("hello django")
     return render(request,"index.html")
 
@@ -81,12 +87,41 @@ def del_session(request):
 
     return HttpResponse("session已经清空")
 
-def post(request):
-    return render(request,"post.html")
+# def post(request):
+#     return render(request,"post.html")
 
-def do_post(request):
-    title=request.POST.get("title")
-    content=request.POST.get('content')
+# def do_post(request):
+#     title=request.POST.get("title")
+#     content=request.POST.get('content')
+#
+#     text="发帖成功:title=%s,content=%s"%(title,content)
+#     return HttpResponse(text)
 
-    text="发帖成功:title=%s,content=%s"%(title,content)
-    return HttpResponse(text)
+def the_post(request):
+    if request.method=="GET":
+        return render(request,"post.html")
+    else:
+        title=request.POST.get("title")
+        content=request.POST.get("content")
+        text = "发帖成功:title=%s,content=%s" % (title, content)
+        return HttpResponse(text)
+
+
+# class CheckIpMixin(object):
+#     @method_decorator(check_ip)
+#     def dispatch(selfs,request,*args,**kwargs):
+#         return super().dispatch(request,*args,**kwargs)
+
+@method_decorator(check_ip,name='dispatch')
+class PostView(View):
+    @method_decorator(check_ip)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self,request):
+        return render(request,"post2.html")
+
+    def post(self,request):
+        return HttpResponse("执行发帖操作")
+
+

@@ -16,6 +16,8 @@ urlpatterns = [
     url(r"^get_session",views.get_session),
     url(r"set_session",views.set_session),
     url(r"del_session",views.del_session),
-    url(r"^post$",views.post),
-    url(r"^do_post$",views.do_post),
+    # url(r"^post$",views.post),
+    # url(r"^do_post$",views.do_post),
+    url(r"^the_post$",views.the_post),
+    url(r"^post2$",views.PostView.as_view())
 ]
